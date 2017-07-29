@@ -1,0 +1,21 @@
+<script src="http://cdn.steemjs.com/lib/latest/steem.min.js"></script>
+<script>
+// steem.api.getAccountHistory('jeongmincha', -1, 100, function(err, response){
+//     // console.log(err, response);
+//     if (err == null) {
+//         console.log('haha');
+//         console.log(response[0][1].op[1]);
+//         console.log(response[1][1].op[1]);
+//         console.log(response[2][1].op[1]);
+//         console.log(response[3][1].op[1]);
+//     }
+// });
+// steem.api.getOwnerHistory('jeongmincha', function(err, response) {
+//     console.log(err, response);
+// });
+steem.api.getContent('jeongmincha', 
+    'idiom-of-the-day-beat-around-the-bush-or-beat-about-the-bush',
+    function(err, response) {
+        console.log(err, response);
+});
+</script>
