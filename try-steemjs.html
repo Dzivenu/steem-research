@@ -1,59 +1,23 @@
 <script src="http://cdn.steemjs.com/lib/latest/steem.min.js"></script>
 <script>
-// steem.api.getAccountHistory('jeongmincha', -1, 100, function(err, response){
-//     // console.log(err, response);
-//     if (err == null) {
-//         console.log('haha');
-//         console.log(response[0][1].op[1]);
-//         console.log(response[1][1].op[1]);
-//         console.log(response[2][1].op[1]);
-//         console.log(response[3][1].op[1]);
-//     }
-// });
-// steem.api.getOwnerHistory('jeongmincha', function(err, response) {
-//     console.log(err, response);
-// });
-// steem.api.getContent('jeongmincha', 
-//     'idiom-of-the-day-beat-around-the-bush-or-beat-about-the-bush',
-//     function(err, response) {
-//         console.log(err, response);
-// });
-var lim = 99;
-// steem.api.getAccountHistory('jeongmincha', -1, lim)
-// .then(function(result){
-//     for (var i=0; i<lim; i++) {
-//         var obj = result[i][1].op;
-//         // console.log(obj[0]);
-//         if (obj[0] === "comment" && obj[1].parent_author == "") {
-//             console.log(obj[1].permlink);
-//             // console.log(obj[1].body);
-//         }
-//     }
-// });
 async function getAllAccountHistory(username) {
     var res = [];
     let max_obj = await steem.api.getAccountHistory(username, -1, 0);
     let max_id = max_obj[0][0];
-    res.push(... await steem.api.getAccountHistory(username, max_id, max_id));
-    // for (var i=0; i<1000) {
-    //     res.push(... await steem.api.getAccountHistory(username, i*10+9, 9));
-    // }
+
+    let quotient = Math.floor(max_id / 1000);
+    let remainder = max_id % 1000;
+    console.log(quotient, remainder);
+
+    res.push(... await steem.api.getAccountHistory(username, remainder, remainder));
+    for (var i=1; i<=quotient; i++) {
+        res.push(... await steem.api.getAccountHistory(username, remainder + i*1000, 999));
+    }
+    
     return res;
 }
 
 getAllAccountHistory('jeongmincha').then(function(result){
     console.log(result);
 });
-// steem.api.getAccountHistory('jeongmincha', 19, 9)
-// .then(function(result){
-//     console.log(result);
-// });
-// steem.api.getAccountHistory('jeongmincha', 29, 9)
-// .then(function(result){
-//     console.log(result);
-// });
-
-// steem.api.getAccounts(['jeongmincha'], function(err, response) {
-//     console.log(err, response);
-// });
 </script>
