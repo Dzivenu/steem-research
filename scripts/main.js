@@ -25,5 +25,17 @@ async function getAllAccountHistory(username) {
 
 let username = 'jeongmincha';
 getAllAccountHistory(username).then(function(result){
-    console.log(result.max_id);
+    var permlink_set = new Set();
+
+    for (var i = 0; i < result.max_id + 1; i++) {
+        let obj = result.history[i];
+        let type = obj[1].op[0];
+        let body = obj[1].op[1];
+        if (type == 'comment' && body.parent_author == "") {
+            permlink_set.add(body.permlink);
+        }
+    }
+
+    console.log(permlink_set);
+    return permlink_set;
 });
