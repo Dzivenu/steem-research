@@ -1,5 +1,6 @@
 <script src="http://cdn.steemjs.com/lib/latest/steem.min.js"></script>
 <script>
+
 async function getLatestAccountHistory(username) {
     var hist = await steem.api.getAccountHistory(username, -1, 0);
     return hist[0][0];
@@ -18,14 +19,24 @@ async function getAllAccountHistory(username) {
         res.push(... await steem.api.getAccountHistory(username, remainder + i*1000, 999));
     }
     
-    return res;
+    console.log('getAllAccountHistory() called: <- ' + username);
+    return {
+        max_id: max_id, 
+        history: res
+    };
 }
 
-getAllAccountHistory('jeongmincha').then(function(result){
-    console.log(result);
-    // for (var i=0;)
-    // for(var item in result) {
-    //     console.log(item[1]);
-    // }
-});
+var fs = require('fs');
+
+// let username = 'jeongmincha';
+// getAllAccountHistory(username).then(function(result){
+//     // console.log(result.max_id);
+//     // for (var i = 0; i < result.max_id + 1; i++) {        
+//     // }
+//     // console.log
+//     // console.log(max_id);
+//     // console.log(result[max_id]);
+// });
+// import 'fs';
+// var fs = require('fs');
 </script>
