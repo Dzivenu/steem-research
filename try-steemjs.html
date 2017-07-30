@@ -13,9 +13,47 @@
 // steem.api.getOwnerHistory('jeongmincha', function(err, response) {
 //     console.log(err, response);
 // });
-steem.api.getContent('jeongmincha', 
-    'idiom-of-the-day-beat-around-the-bush-or-beat-about-the-bush',
-    function(err, response) {
-        console.log(err, response);
+// steem.api.getContent('jeongmincha', 
+//     'idiom-of-the-day-beat-around-the-bush-or-beat-about-the-bush',
+//     function(err, response) {
+//         console.log(err, response);
+// });
+var lim = 99;
+// steem.api.getAccountHistory('jeongmincha', -1, lim)
+// .then(function(result){
+//     for (var i=0; i<lim; i++) {
+//         var obj = result[i][1].op;
+//         // console.log(obj[0]);
+//         if (obj[0] === "comment" && obj[1].parent_author == "") {
+//             console.log(obj[1].permlink);
+//             // console.log(obj[1].body);
+//         }
+//     }
+// });
+async function getAllAccountHistory(username) {
+    var res = [];
+    let max_obj = await steem.api.getAccountHistory(username, -1, 0);
+    let max_id = max_obj[0][0];
+    res.push(... await steem.api.getAccountHistory(username, max_id, max_id));
+    // for (var i=0; i<1000) {
+    //     res.push(... await steem.api.getAccountHistory(username, i*10+9, 9));
+    // }
+    return res;
+}
+
+getAllAccountHistory('jeongmincha').then(function(result){
+    console.log(result);
 });
+// steem.api.getAccountHistory('jeongmincha', 19, 9)
+// .then(function(result){
+//     console.log(result);
+// });
+// steem.api.getAccountHistory('jeongmincha', 29, 9)
+// .then(function(result){
+//     console.log(result);
+// });
+
+// steem.api.getAccounts(['jeongmincha'], function(err, response) {
+//     console.log(err, response);
+// });
 </script>
