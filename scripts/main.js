@@ -3,6 +3,10 @@ async function getLatestAccountHistory(username) {
     return hist[0][0];
 }
 
+async function getContent(username, permlink) {
+    return await steem.api.getContent(username, permlink);
+}
+
 async function getAllAccountHistory(username) {
     var res = [];
     let max_id = await getLatestAccountHistory(username);
@@ -37,10 +41,37 @@ async function getPermlinks(username) {
         }
     }
 
-    console.log('hello');
     console.log(permlink_set);
     return permlink_set;
 }
 
+async function getVoteCounter(username, permlinks) {
+
+    var vote_counter = {};
+
+    permlinks.forEach(async (permlink) => {
+
+        var content = await steem.api.getContent(username, permlink);
+        let votes = content.active_votes;
+
+        for (var i = 0; i < votes.length; i++) {
+
+            let voter = votes[i].voter;
+            if ( voter in vote_counter ) {
+                vote_counter[voter] += 1;
+            } else {
+                vote_counter[voter] = 1;
+            }
+        }
+    });
+
+    console.log(vote_counter);
+    return vote_counter;
+}
+
 let username = 'jeongmincha';
-getPermlinks(username);
+
+getPermlinks(username).then(function(result){
+    let permlinks = result;
+    getVoteCounter(username, permlinks);
+});
