@@ -23,8 +23,9 @@ async function getAllAccountHistory(username) {
     };
 }
 
-let username = 'jeongmincha';
-getAllAccountHistory(username).then(function(result){
+async function getPermlinks(username) {
+
+    var result = await getAllAccountHistory(username);
     var permlink_set = new Set();
 
     for (var i = 0; i < result.max_id + 1; i++) {
@@ -36,6 +37,10 @@ getAllAccountHistory(username).then(function(result){
         }
     }
 
+    console.log('hello');
     console.log(permlink_set);
     return permlink_set;
-});
+}
+
+let username = 'jeongmincha';
+getPermlinks(username);
